@@ -1,0 +1,12 @@
+//pom.xml
+dependency설정 (직접 설치안해도 없으면 설치)
+
+// DBMS설정
+https://dbtmddus.swedu-run.lge.com/ords/sql-developer
+goorm
+SQL
+
+create table student(name varchar(20), age int, birth date)
+
+//unzip
+unzip -d ./ ./~~.zip
