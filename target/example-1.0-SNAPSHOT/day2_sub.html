@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+    <h1> 제품 관리 </h1>
+    <form action="spring/sub2_input" method="get" target="myi">        
+        제품명:<input type="text" name="p_name" required><br>
+        수량:<input type="number" name="p_num" min="1" max="120" ><br>
+        생산일:<input type="date" name="p_date"><br>
+        <button>제품입력</button>
+    </form>
+    <form action="spring/sub2_show" method="get" target="myi">        
+        <button>보기</button>
+    </form>
+    <iframe name="myi" width="500" height="1000" frameborder="0">
+    </iframe>
+</body>
+</html>

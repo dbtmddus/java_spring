@@ -10,3 +10,17 @@ create table student(name varchar(20), age int, birth date)
 
 //unzip
 unzip -d ./ ./~~.zip
+
+
+
+//
+${result} -> EL표현식
+
+//MVC 구조
+Servlet 사용 시, java코드에서는 실제 로직을 돌리고, jsp에서는 어떻게 보여줄지 html을 담당한다.
+user -> servlet -> jsp ->user 방향으로 통신
+client가 server로부터 받은 static web에 데이터 입력하면, servlet에서 먼저 받아서 data처리하고, jsp로 던지면 jsp는 data까지 잘 포함해서
+html로 회신
+
+// spring 사용 url
+https://zjuqymzaepgwliin-cmqic.swedu-run.lge.com/spring/test
