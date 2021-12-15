@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+    <form action="firstPizzaProc.jsp" method="get" target="myi">        
+        고객명:<input type="text" name="name" required><br>
+        전화번호:<input type="tel" name="phone" pattern="\d{3}-\d{3,4}-\d{4}" placeholder="xxx-xxxxx-xxxxx 형식으로 입력"><br>
+        이메일:<input type="email" name="email"><br>
+        <hr>
+        <fieldset>
+            <legend>피자사이즈</legend>
+            <input type="radio" name="size" value="Small">Small<br>
+            <input type="radio" name="size" value="Medium">Medium<br>
+            <input type="radio" name="size" value="Large">Large<br>
+        </fieldset>
+        
+        <fieldset>
+            <legend>토핑 선택</legend>
+            <input type="checkbox" name="topping" value="베이컨">베이컨<br>
+            <input type="checkbox" name="topping" value="치즈">치즈<br>
+            <input type="checkbox" name="topping" value="양파">양파<br>
+            <input type="checkbox" name="topping" value="버섯">버섯<br>
+        </fieldset>
+        
+        <br>
+        <hr>
+        희망배송시간:<input type="time" name="time" min=10:00 maz=22:00>
+        <br>
+        배송시요청사항<textarea cols="100" rows="5" name="reqtxt"></textarea>
+        <br>
+        <button>주문하기</button>
+    </form>
+    
+    <iframe name="myi" width="500" height="1000" frameborder="0">
+    </iframe>
+    
+</body>
+</html>

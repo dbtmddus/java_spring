@@ -1,7 +1,9 @@
 package test.my.myclass;
 
-public class MyTest {
-    public String hello(){
+public class MyTest 
+{
+    public String hello()
+    {
         return "hello class";
     }
 }

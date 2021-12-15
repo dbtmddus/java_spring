@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+    <form action="04.param.jsp" method="get" target="myi">        
+        이름:<input type="text" name="myname" required><br>
+        나이:<input type="number" name="myage" min="1" max="120" ><br>
+        생일:<input type="date" name="mybirth"><br>
+        <hr>
+        전화번호:<input type="tel" name="myphone" pattern="\d{3}-\d{3,4}-\d{4}" placeholder="xxx-xxxx-xxxx형식으로 입력"><br>
+        이메일:<input type="email" name="myemail"><br>
+        <hr>
+        <fieldset>
+            <legend>색상</legend>
+            <input type="radio" name="color" value="빨강">빨강<br>
+            <input type="radio" name="color" value="파랑">파랑<br>
+            <input type="radio" name="color" value="노랑">노랑<br>
+        </fieldset>
+        
+        <fieldset>
+            <legend>취미</legend>
+            <input type="checkbox" name="hobby" value="낚시">낚시<br>
+            <input type="checkbox" name="hobby" value="골프">골프<br>
+            <input type="checkbox" name="hobby" value="영화">영화<br>
+        </fieldset>
+        
+        <select name="company">
+            <option value="회사1">회사1</option>
+            <option value="회사2">회사2</option>
+            <option value="회사3">회사3</option>
+        </select>
+        <br>
+        <hr>
+        <input type="time" name="mytime" min="10:00" max="18:00">
+        
+        <textarea cols="100" rows="5" name="mytxt"></textarea>
+        
+        <button>전송</button>
+    </form>
+    
+    <iframe name="myi" width="500" height="1000" frameborder="0">
+    </iframe>
+    
+</body>
+</html>

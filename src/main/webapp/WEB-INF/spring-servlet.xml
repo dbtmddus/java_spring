@@ -6,6 +6,42 @@
                            http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
                            http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 
+    <!-- <resources mapping="/resources/**" location="/resources/" /> -->
+    <!--<bean id="myData" class="test.my.mybean.MyData"></bean> -->
+    <!--<bean id="std" class="test.my.mybean.Student">
+        <property name="name" value="hello"></property>
+        <property name="age" value="20"></property>
+    </bean> -->
+    
+    <context:component-scan base-package="test.my.mymodel" />
+    
+    <bean id="myData" class="test.my.mybean.MyData" scope="prototype">
+        <constructor-arg value="100"></constructor-arg>
+    </bean>
+    
+    <bean id="std" class="test.my.mybean.Student">
+        <constructor-arg value="hello"></constructor-arg>
+        <constructor-arg value="30"></constructor-arg>
+        <constructor-arg ref="myData"></constructor-arg>
+    </bean>
+    
+    <bean id="obese" class="test.my.myclass.Obese">
+    </bean>
+    
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>
+		<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"></property>
+		<property name="username" value="goorm"></property>
+		<property name="password" value="goorm"></property>
+	</bean>   
+    
+    <bean id="stdDAO" class="test.my.mymodel.StdDbPoolDAO"></bean>
+    
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	    <property name="maxUploadSize" value="200000000" />
+	    <property name="maxInMemorySize" value="200000000" />
+	</bean>
+    
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/jsp/" />
         <property name="suffix" value=".jsp" />
