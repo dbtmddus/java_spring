@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<title>가위,바위,보</title>
+</head>
+<body>
+	<div class="container">
+        
+		<form action="spring/gameControl" target="gameResult">
+			<h1>가위, 바위, 보</h1>
+			<h3>
+				선택 : <select class="form-select" name="user">
+					<option value="0">가위</option>
+					<option value="1">바위</option>
+					<option value="2">보</option>
+				</select>
+			</h3>
+			<button class="btn btn-info">게임시작</button>
+		</form>
+  		<iframe name="gameResult" width="800" height="1500" frameborder="0">
+		</iframe>
+	</div>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+    <script>
+        function recvFn( e ){
+            console.log( e.data )
+        }
+        function fn()
+        {
+            //evtSource = new EventSource("18.sseSvr.jsp")
+            evtSource = new EventSource("spring/sseSvr")
+            evtSource.onmessage = recvFn
+        }
+        function fn1(){
+            evtSource.close()
+        }
+    </script>
+</head>
+<body>
+    <button onclick="fn()">sse요청</button><br>
+    <button onclick="fn1()">sse종료</button><br>
+    <div id="myshow"></div>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+    <style>
+        h1{
+            color:red;
+        }
+    </style>
+    <script>
+        function recvFn(){
+            //myshow.innerText = "hello"
+            //myshow.innerHTML ="<h1>test</h1>"
+            myshow.innerHTML = xhr.responseText
+        }
+        function fn(myhtml)
+        {
+            xhr = new XMLHttpRequest()
+            xhr.open("GET", myhtml)
+            xhr.onload= recvFn
+            xhr.send() // request ajax
+        }
+    </script>
+</head>
+<body>
+    <!--<button onclick="fn('16.tae.html')">태국</button>
+    <button onclick="fn('16.pil.html')">필리핀</button>
+    <button onclick="fn('16.hong.html')">홍콩</button>-->
+    <a onclick="fn('16.tae.html')" href="#" >태국</a>
+    <a onclick="fn('16.pil.html')" href="#">필리핀</a>
+    <a onclick="fn('16.hong.html')" href="#">홍콩</a>    
+    
+    <div id="myshow"></div>
+</body>
+</html>

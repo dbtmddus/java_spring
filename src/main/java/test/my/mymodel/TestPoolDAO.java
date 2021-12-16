@@ -9,6 +9,9 @@ import java.sql.*;
 import java.sql.Connection;
 import java.util.ArrayList;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 @Component
 public class TestPoolDAO {
     
@@ -59,4 +62,28 @@ public class TestPoolDAO {
             return null;
         }
     }
+    
+    public String getJsonData()
+    {
+       JSONArray jarr = new JSONArray();
+       try{
+            String sql = "select name, age from student";
+            Connection conn = dataSource.getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs =stmt.executeQuery( sql );
+            while( rs.next())
+            {
+                JSONObject jo = new JSONObject();
+                String name = rs.getString("name");
+                int age = rs.getInt("age");
+                jo.put("name",name);
+                jo.put("age",age);
+                jarr.add( jo );
+            }
+            conn.close();
+        }catch( Exception ex){
+        }
+        return jarr.toJSONString();        
+    }
+
 }

@@ -8,10 +8,12 @@ import org.springframework.core.SpringVersion;
 import java.text.DateFormat;
 import java.util.Date;
 import java.io.PrintWriter;
-import java.io.IOException;
+
+
 
 import java.util.Locale;
 import java.util.ArrayList;
+import java.util.Base64;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,13 +21,23 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.ui.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import org.apache.commons.io.FileUtils;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.File;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import java.sql.*;
 import test.my.mymodel.*;
 import test.my.mybean.*;
 import test.my.myclass.*;
-import java.util.concurrent.ThreadLocalRandom;
 
 @Controller
 public class HomeController 
@@ -78,6 +90,15 @@ public class HomeController
 		return "hello"; //forward: test.jsp
 	}
     
+    @RequestMapping(value = "/aoptest", method = RequestMethod.GET)
+	public String aoptest(Locale locale, Model model) {
+
+		 // //OtherClass my2 = new OtherClass();
+		 // int n = myT.method1();
+		 // System.out.println("n:"+n);
+		 // model.addAttribute("serverTime", "test" );
+		return "home";
+	}
     /*
     @RequestMapping(value = "/param", method = RequestMethod.GET)
 	public String param(HttpServletRequest request, Model model) 
@@ -216,49 +237,150 @@ public class HomeController
         } catch (Exception ex){
             return "실패";
         }
+	}
+    
+    @RequestMapping(value = "/imgsave", method = RequestMethod.POST)
+	public String imgsave( @RequestParam("myfile") MultipartFile myfile, Model model) 
+    {
+        //public String bimanControl( @RequestParam("height") int height, int weight, Model model)
+        String fname = myfile.getOriginalFilename();
+        System.out.println("전송파일이름:"+fname);
+        System.out.println("전송파일크기:"+myfile.getSize() );
+        try{
+            InputStream sFile = myfile.getInputStream();
+            // File file = new File(fname); //"/my/"+fname
+            // FileUtils.copyInputStreamToFile( sFile, file);
+            String sql = "insert into imgup values(?,?)";
+            Connection conn = dataSource.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1,fname);
+            pstmt.setBlob( 2, sFile );
+            pstmt.execute();
+            conn.close();
+            model.addAttribute("result","수신성공");
+        }catch( Exception ex){
+            model.addAttribute("result", ex.getMessage());
+        }
+        return "fileResult";
+	}
+    
+    @RequestMapping(value = "/imgselect", method = RequestMethod.GET)
+	public String imgselect(HttpServletResponse response, Model model) {
+        ArrayList<ImgDTO> arr = new ArrayList<ImgDTO>();
+        
+        try{
+            String sql = "select * from imgup";
+            Connection conn = dataSource.getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs =stmt.executeQuery( sql );
+            while( rs.next())
+            {
+                String imgname = rs.getString("imgname");
+                Blob imgdata = rs.getBlob("imgdata");
+                
+                byte[] bimg =  imgdata.getBytes(1, (int)imgdata.length());
+				String sImg="data:img/png;base64,"+Base64.getEncoder().encodeToString(bimg);
+                arr.add( new ImgDTO( imgname, sImg ));
+            }
+            conn.close();
+            model.addAttribute("imgArr", arr );
+        }catch( Exception ex){
+            model.addAttribute("imgArr", ex.getMessage());
+        }
+        return "imgview";
+	}
+    
+    //method = { RequestMethod.GET, RequestMethod.POST }
+    @RequestMapping(value = "/jsonCall", method = RequestMethod.GET,produces = "application/json; charset=utf8" )
+	public @ResponseBody  String jsonCall(HttpServletResponse response, Model model) 
+    {
+        // JavaScript Object Notation;
+        //{"name":"홍길동","age":20} //
+        //[{"name":"홍길동","age":20},{"name":"이순신","age":30} ]
+        // JSONObject jObj = new JSONObject();
+        // jObj.put("name","홍길동");
+        // jObj.put("age",20);
+        // String makeJson =jObj.toJSONString(); //"{\"name\":\"홍길동\",\"age\":20}"
+        // return makeJson;
+        JSONArray jarr = new JSONArray();
+        JSONObject j1 = new JSONObject();
+        j1.put("name","hong");
+        j1.put("age",20);
+        jarr.add(j1);        
+        JSONObject j2 = new JSONObject();
+        j2.put("name","lee");
+        j2.put("age",30);
+        jarr.add(j2);            
+        return jarr.toJSONString();
+	}
+    
+    @RequestMapping(value = "/jsonSelect",  method = RequestMethod.GET, produces = "application/json; charset=utf8" )
+	public @ResponseBody  String jsonSelect(HttpServletResponse response, Model model) 
+    {
+        //response.setContentType("text/html; charset=UTF-8");
+        JSONArray jarr = new JSONArray();
+       try{
+            String sql = "select name, age from student";
+            Connection conn = dataSource.getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs =stmt.executeQuery( sql );
+            while( rs.next())
+            {
+                JSONObject jo = new JSONObject();
+                String name = rs.getString("name");
+                int age = rs.getInt("age");
+                jo.put("name",name);
+                jo.put("age",age);
+                jarr.add( jo );
+            }
+            conn.close();
+        }catch( Exception ex){
+           }
+        System.out.println(jarr.toJSONString());
+        return jarr.toJSONString();
+	}
+    
+    @RequestMapping(value = "/sseSvr", method = RequestMethod.GET)
+	public void sseSvr(HttpServletResponse response, Model model) {
+        response.setContentType("text/event-stream; charset=UTF-8");
+        PrintWriter out=null;
+        try{
+            String sData =String.format("data:%s\n", testDAO.getJsonData() );
+            
+            out = response.getWriter();
+            //out.print( "data:ssetest\n");
+            out.print( sData);
+            out.print( "retry:2000\n\n");
+            out.flush();
+            
+            //out.print("close:\n\n");
+        }catch( Exception e){
+        }
 	}    
     
-    @RequestMapping(value = "/RKDNLQKDNLQH", method = RequestMethod.GET)
-	public String RKDNLQKDNLQH(String user_input, Model model) {
-       int randomNum = ThreadLocalRandom.current().nextInt(1, 3 + 1);
-       String cpu_input = "가위";
-       String cpu_inputImg = "/image/s.jpeg";
-       if (randomNum == 1){
-          model.addAttribute("cpu_input", "가위");            
-          cpu_inputImg = "/image/s.jpeg";
-       }else if (randomNum == 2){
-          model.addAttribute("cpu_input", "바위");            
-          cpu_inputImg = "/image/r.jpeg";
-       }else {
-          model.addAttribute("cpu_input", "보");            
-          cpu_inputImg = "/image/b.png";
-       }
-       model.addAttribute("cpu_inputImg",cpu_inputImg);            
+    @RequestMapping(value = "/productListImg", method = RequestMethod.GET)
+	public String select(Model model) 
+    {
+        ProductDAO productDao = new ProductDAO();
+        ArrayList<ProductDTO> product = productDao.selectProduct();
+        model.addAttribute("product", product);
+        return "productSelectViewImg";
+	}
 
-            
-       int userNum = 1;
-       String user_inputImg = "/image/s.jpeg";
-       if (user_input.equals("가위")){
-           userNum = 1;
-           user_inputImg = "/image/s.jpeg";
-       }else if (user_input.equals("바위")){
-           userNum = 2;
-           user_inputImg = "/image/r.jpeg";
-       }else {
-           userNum = 3;
-           user_inputImg = "/image/b.png";
-       }
-       model.addAttribute("user_input", user_input);            
-       model.addAttribute("user_inputImg", user_inputImg);            
-    
-        if ( userNum == ((randomNum+1)%3) ){
-            model.addAttribute("result", "win");
-        }else if ( userNum == randomNum ){
-            model.addAttribute("result", "draw");            
-        }else {
-            model.addAttribute("result", "lose");            
-        }
-        
-        return "day3_sub";
-	}               
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

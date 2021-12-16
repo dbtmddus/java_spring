@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+    <h1> 제품 입력....</h1> <br>
+	<form action="spring/productInsert" method="get" target="myt" enctype="multipart/form-data">
+        제품명 : <input type="text" name="name"><br>
+        수량 : <input type="number" name="qty"><br>
+        생산일 : <input type="date" name="yyymmdd"><br>
+		파일:<input type="file" name="myfile"><br>
+	</form>
+
+        <button>입력</button>
+    </form>
+    <iframe name="myt" width="500" height="500">     
+    </iframe>
+</body>
+</html>

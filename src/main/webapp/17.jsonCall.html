@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+    <style>
+        h1{
+            color:red;
+        }
+    </style>
+    <script>
+        function recvFn(){
+            //myshow.innerText = "hello"
+            //myshow.innerHTML ="<h1>test</h1>"
+           // myshow.innerText = xhr.responseText
+            console.log(xhr.responseText )
+            jArr = JSON.parse(xhr.responseText )
+            console.log( jArr )
+            myTable.innerHTML ="" //table clear
+            for( j of jArr)
+            {
+                //console.log( j.name, j.age)//j['name']
+                tr= myTable.insertRow()
+                td1 = tr.insertCell()
+                td2 = tr.insertCell()
+                td1.innerText  = j.name
+                td2.innerText  = j.age
+            }
+        }
+        function fn()
+        {
+            xhr = new XMLHttpRequest()
+            //xhr.open("GET", "spring/jsonCall")
+            xhr.open("GET", "spring/jsonSelect")
+            xhr.onload= recvFn //event  함수(async)
+            xhr.send() // request ajax
+        }
+    </script>
+</head>
+<body>
+    <button onclick="fn()">요청</button><br>
+    <div id="myshow"></div>
+    
+    <table>
+        <thead>
+            <tr><th>이름</th><th>나이</th></tr>
+        </thead>
+        <tbody id="myTable">
+        </tbody>
+    </table>
+</body>
+</html>
+
+
+
+
