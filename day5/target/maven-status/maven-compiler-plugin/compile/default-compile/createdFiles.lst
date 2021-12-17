@@ -1,0 +1,8 @@
+io/goorm/example/MyAdvice.class
+com/test/mybatis/StudentModel.class
+my/aoptest/Hello.class
+com/test/mybatis/StudentDAOImpl.class
+com/test/mybatis/StudentDAO.class
+test/my/mymodel/ProductDTO.class
+io/goorm/example/HomeController.class
+io/goorm/example/AdvisorClass.class

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+    <script>
+        function recvFn(){
+            //myshow.innerText = "hello"
+            //myshow.innerHTML ="<h1>test</h1>"
+            myiframe.contentWindow.document.body.innerHTML =""
+            myshow.innerHTML = xhr.responseText
+        }
+        function fn(myhtml)
+        {
+            xhr = new XMLHttpRequest()
+            xhr.open("GET", myhtml)
+            xhr.onload= recvFn
+            xhr.send() // request ajax
+        }
+        function fnsend(){
+            
+        }
+    </script>
+</head>
+<body>
+    <button onclick="fn('day4.ex.main.html')">메인</button>
+    <button onclick="fn('day4.ex.insert.html')">입력</button>
+    <button onclick="fn('spring/prodlist')">보기</button> 
+    
+    <div id="myshow">
+    </div>
+    <iframe id="myiframe" name="myi" width="500"  height="100" frameborder="0"></iframe>
+</body>
+</html>
+
+
+
+
+

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.test.mybatis.StudentDAO">
+    <resultMap type="StudentModel" id="stdModel">
+		<result property="name" column="name" />
+		<result property="age" column="age" />
+		<result property="birth" column="birth" />
+	</resultMap>
+    
+	<select id="selectStudent" resultMap="stdModel">
+		SELECT * FROM student
+	</select>
+    
+	<select id="selectStudentOrder" resultMap="stdModel">
+		SELECT * FROM student order by name
+	</select>    
+    
+	<select id="selectStudentWhere"  resultMap="stdModel" parameterType="String">
+		SELECT * FROM student where name= #{name}
+	</select>      
+
+    <select id="selectStudentOr"  resultMap="stdModel" parameterType="HashMap">
+		SELECT * FROM student where name= #{name} or age=#{age}
+	</select> 
+    
+	<insert id="insertStudent" parameterType="com.test.mybatis.StudentModel">
+		INSERT INTO STUDENT VALUES( #{name}, #{age},#{birth} )
+	</insert>
+	
+    
+    
+</mapper>
